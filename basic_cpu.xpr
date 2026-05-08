@@ -106,14 +106,6 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/imports/C28Jeremiah.Hernande/Downloads/button_debounce.vhd">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../../Downloads/button_debounce.vhd"/>
-          <Attr Name="ImportTime" Val="1778217651"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PSRCDIR/sources_1/imports/C28Jeremiah.Hernande/281_Code/ece281-lab5/src/clock_divider.vhd">
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/src/clock_divider.vhd"/>
@@ -149,15 +141,6 @@
           <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="ImportPath" Val="$PPRDIR/src/twoscomp_decimal.vhd"/>
           <Attr Name="ImportTime" Val="1778212429"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/C28Jeremiah.Hernande/Downloads/counter.vhd">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="ImportPath" Val="$PPRDIR/../../Downloads/counter.vhd"/>
-          <Attr Name="ImportTime" Val="1778217659"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
