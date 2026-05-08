@@ -25,7 +25,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity controller_fsm is
     Port ( i_clk   : in  STD_LOGIC;
            i_reset : in  STD_LOGIC;
-           i_adv   : in  STD_LOGIC;
+           i_adv   : in  STD_LOGIC; -- Debounced pulse from btnC
            o_cycle : out STD_LOGIC_VECTOR (3 downto 0));
 end controller_fsm;
 
@@ -35,11 +35,13 @@ architecture FSM of controller_fsm is
     signal r_state : state_type := s_reset;
 
 begin
+
     process(i_clk, i_reset)
     begin
         if (i_reset = '1') then
             r_state <= s_reset;
         elsif (rising_edge(i_clk)) then
+            -- Only advance if the button is pressed (debounced pulse)
             if (i_adv = '1') then
                 case r_state is
                     when s_reset =>
@@ -49,6 +51,8 @@ begin
                     when s_op2 =>
                         r_state <= s_result;
                     when s_result =>
+                        r_state <= s_op1; -- Usually loops back to op1, not reset
+                    when others =>
                         r_state <= s_reset;
                 end case;
             end if;
@@ -59,6 +63,6 @@ begin
                "0010" when r_state = s_op1   else
                "0100" when r_state = s_op2   else
                "1000" when r_state = s_result else
-               "0001";
+               "0001"; -- Default to reset state
 
 end FSM;
