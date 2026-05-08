@@ -74,7 +74,7 @@ begin
 
     -- C (Carry): The 9th bit of the calculation. 
     -- For ADD, it is the Carry. For SUB, it represents the Borrow.
-    o_flags(1) <= w_result(8);
+    o_flags(1) <= not w_result(8) when i_op = "001" else w_result(8);
 
     -- V (Overflow): Logic for signed arithmetic
     -- Set when the sign of the result is incorrect based on the input signs.
