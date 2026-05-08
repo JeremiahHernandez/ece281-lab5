@@ -40,33 +40,40 @@ entity ALU is
 end ALU;
 
 architecture Behavioral of ALU is
-    signal w_result : std_logic_vector(8 downto 0);
+    signal w_result : std_logic_vector(8 downto 0); 
 begin
+
     process(i_A, i_B, i_op)
     begin
         case i_op is
             when "000" => -- ADD
-                w_result <= std_logic_vector(resize(signed(i_A), 9) + resize(signed(i_B), 9));
+                w_result <= std_logic_vector(resize(unsigned(i_A), 9) + resize(unsigned(i_B), 9));
+            
             when "001" => -- SUB (A - B)
-                w_result <= std_logic_vector(resize(signed(i_A), 9) - resize(signed(i_B), 9));
+                w_result <= std_logic_vector(resize(unsigned(i_A), 9) - resize(unsigned(i_B), 9));
+            
             when "010" => -- AND
                 w_result <= ('0' & (i_A and i_B));
+            
             when "011" => -- OR
                 w_result <= ('0' & (i_A or i_B));
+                
             when others =>
                 w_result <= (others => '0');
         end case;
     end process;
 
+    -- Result is the lower 8 bits
     o_result <= w_result(7 downto 0);
 
-    -- Flag Logic (NZCV)
-    o_flags(3) <= w_result(7); -- N: Negative (MSB of 8-bit result)
+    -- Flag Mapping (NZCV)
+    o_flags(3) <= w_result(7);                        -- N: Negative
     o_flags(2) <= '1' when w_result(7 downto 0) = x"00" else '0'; -- Z: Zero
-    o_flags(1) <= w_result(8); -- C: Carry (9th bit of calculation)
+    o_flags(1) <= w_result(8);                        -- C: Carry (the bit that failed your TB)
     
     -- V: Signed Overflow logic
     o_flags(0) <= ((not i_A(7) and not i_B(7) and w_result(7)) or (i_A(7) and i_B(7) and not w_result(7))) when i_op = "000" else
-                  ((not i_A(7) and i_B(7) and w_result(7)) or (i_A(7) and not i_B(7) and not w_result(7))) when i_op = "001" else
+                  ((not i_A(7) and i_B(7) and w_result(7)) or (i_A(7) and not i_7(7) and not w_result(7))) when i_op = "001" else
                   '0';
+
 end Behavioral;
