@@ -41,7 +41,37 @@ end ALU;
 
 architecture Behavioral of ALU is
 
+
+signal w_result : std_logic_vector(8 downto 0);
 begin
 
+    process(i_A, i_B, i_op)
+    begin
+        case i_op is
+            when "000" => -- Add
+                w_result <= std_logic_vector(resize(signed(i_A), 9) + resize(signed(i_B), 9));
+            when "001" => -- Subtract
+                w_result <= std_logic_vector(resize(signed(i_A), 9) - resize(signed(i_B), 9));
+            when "010" => -- And
+                w_result <= ('0' & (i_A and i_B));
+            when "011" => -- Or
+                w_result <= ('0' & (i_A or i_B));
+            when others =>
+                w_result <= (others => '0');
+        end case;
+    end process;
+
+    -- Output result (lower 8 bits)
+    o_result <= w_result(7 downto 0);
+
+    -- Flag Logic (NZCV)
+    o_flags(3) <= w_result(7); -- N: Negative
+    o_flags(2) <= '1' when w_result(7 downto 0) = x"00" else '0'; -- Z: Zero
+    o_flags(1) <= w_result(8); -- C: Carry out
+    
+    -- V: Overflow (Standard signed overflow logic for Add/Sub)
+    o_flags(0) <= (not i_A(7) and not i_B(7) and w_result(7)) or (i_A(7) and i_B(7) and not w_result(7)) when i_op = "000" else
+                  (not i_A(7) and i_B(7) and w_result(7)) or (i_A(7) and not i_B(7) and not w_result(7)) when i_op = "001" else
+                  '0';
 
 end Behavioral;
